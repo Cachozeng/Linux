@@ -1,0 +1,25 @@
+作业:1.创建zhangsan   lisi  wangwu 3个用户,
+指定zhangsan用户的账户失效时间为2016年5月1日,
+密码最短天数改为10天,密码最长天数为10000,密码过期的前10天提示,
+然后将zhangsan的宿主目录的所属主改为lisi.
+useradd -e 2016-05-01 zhangsan
+useradd lisi
+useradd wangwu
+passwd -n 10 -x 10000 -w 10 zhangsan
+--查看用户密码信息: tail -5 /etc/shadow(失效时间,密码最短天数,最长天数,过期提示天数)
+chown -R lisi /home/zhangsan
+--查看目录的属主: ls -lh /home (第三栏属主,最后一栏目录)
+2.创建88,89,90三个组,在88组里面添加上面三个用户,
+然后将lisi wangwu 基本组改为90,最后将lisi,
+wangwu的宿主目录的权限所属主改为可读,所属组的改为可写可读,其他用户改为rwx
+gourpadd 88
+groupadd 89
+groupadd 90
+gpasswd -M zhangsan,lisi,wangwu 88
+--查看90组的GID:  tail -8 /etc/group
+usermod -g 510 lisi
+usermod -g 510 wangwu
+--查看用户的基本组和附加组: groups zhangsan lisi wangwu
+chmod -R 467 /home/lisi /home/wangwu
+--查看修改后权限: ls -lh /home
+
